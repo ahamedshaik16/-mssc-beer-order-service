@@ -14,44 +14,34 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package guru.sfg.beer.order.service.domain;
+
+package guru.sfg.beer.order.service.web.model;
 
 import lombok.Builder;
-import lombok.Getter;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
-import java.sql.Timestamp;
-import java.util.Set;
+import java.time.OffsetDateTime;
 import java.util.UUID;
 
-/**
- * Created by jt on 2019-01-26.
- */
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
-@Entity
-public class Customer extends BaseEntity {
+@EqualsAndHashCode(callSuper = true)
+public class BeerOrderLineDto extends BaseItem {
 
     @Builder
-    public Customer(UUID id, Long version, Timestamp createdDate, Timestamp lastModifiedDate, String customerName,
-                    UUID apiKey, Set<BeerOrder> beerOrders) {
+    public BeerOrderLineDto(UUID id, Integer version, OffsetDateTime createdDate, OffsetDateTime lastModifiedDate,
+                            String upc, String beerName, UUID beerId, Integer orderQuantity) {
         super(id, version, createdDate, lastModifiedDate);
-        this.customerName = customerName;
-        this.apiKey = apiKey;
-        this.beerOrders = beerOrders;
+        this.upc = upc;
+        this.beerName = beerName;
+        this.beerId = beerId;
+        this.orderQuantity = orderQuantity;
     }
 
-    private String customerName;
-
-    @Column(length = 36, columnDefinition = "varchar")
-    private UUID apiKey;
-
-    @OneToMany(mappedBy = "customer")
-    private Set<BeerOrder> beerOrders;
-
+    private String upc;
+    private String beerName;
+    private UUID beerId;
+    private Integer orderQuantity = 0;
 }

@@ -14,44 +14,36 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package guru.sfg.beer.order.service.domain;
 
-import lombok.Builder;
+package guru.sfg.beer.order.service.web.model;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
-import java.sql.Timestamp;
-import java.util.Set;
+import java.time.OffsetDateTime;
 import java.util.UUID;
 
-/**
- * Created by jt on 2019-01-26.
- */
 @Getter
 @Setter
 @NoArgsConstructor
-@Entity
-public class Customer extends BaseEntity {
+@AllArgsConstructor
+public class BaseItem {
+    @JsonProperty("id")
+    private UUID id = null;
 
-    @Builder
-    public Customer(UUID id, Long version, Timestamp createdDate, Timestamp lastModifiedDate, String customerName,
-                    UUID apiKey, Set<BeerOrder> beerOrders) {
-        super(id, version, createdDate, lastModifiedDate);
-        this.customerName = customerName;
-        this.apiKey = apiKey;
-        this.beerOrders = beerOrders;
-    }
+    @JsonProperty("version")
+    private Integer version = null;
 
-    private String customerName;
+    @JsonFormat(pattern="yyyy-MM-dd'T'HH:mm:ssZ", shape=JsonFormat.Shape.STRING)
+    @JsonProperty("createdDate")
+    private OffsetDateTime createdDate = null;
 
-    @Column(length = 36, columnDefinition = "varchar")
-    private UUID apiKey;
-
-    @OneToMany(mappedBy = "customer")
-    private Set<BeerOrder> beerOrders;
-
+    @JsonFormat(pattern="yyyy-MM-dd'T'HH:mm:ssZ", shape=JsonFormat.Shape.STRING)
+    @JsonProperty("lastModifiedDate")
+    private OffsetDateTime lastModifiedDate = null;
 }
+
